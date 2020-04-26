@@ -7,14 +7,14 @@ USE employee_db;
 
 -- Creates the table "department" within employee_db --
 CREATE TABLE department (
-  id INTEGER(3) NOT NULL AUTO_INCREMENT,
+  id INTEGER NOT NULL AUTO_INCREMENT,
   name VARCHAR(30),
   PRIMARY KEY (id)
 );
 
 -- Creates the table "department" within employee_db --
 CREATE TABLE role (
-  id INTEGER(3) NOT NULL AUTO_INCREMENT,
+  id INTEGER NOT NULL AUTO_INCREMENT,
   title VARCHAR(30),
   salary DECIMAL (7),
   department_id INTEGER(3), 
@@ -24,11 +24,11 @@ CREATE TABLE role (
 
 -- Creates the table "department" within employee_db --
 CREATE TABLE employee (
-  id INTEGER(10) NOT NULL AUTO_INCREMENT,
+  id INTEGER NOT NULL AUTO_INCREMENT,
   first_name VARCHAR(30),
   last_name VARCHAR(30),
   role_id INTEGER(10),
-  manager_id INTEGER(10) NULL,
+  manager_id INTEGER(10),
   PRIMARY KEY (id),
   FOREIGN KEY (role_id) REFERENCES role(id)
 );
