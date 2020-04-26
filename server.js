@@ -1,13 +1,13 @@
 // add npm packagmssql and inquirer
 const mysql = require("mysql");
-const inquirer = require("inquirer")
+const inquirer = require("inquirer");
 
 // add developer modules
 const employee = require('./queries/employee')
 
 const connection = mysql.createConnection({
     host: "localhost",
-    port: 3306,  // mySQL must use 3306
+    port: 3306,  // mysql must use 3306
   
     // Your username
     user: 'root',
@@ -15,14 +15,14 @@ const connection = mysql.createConnection({
     // Your password
     password: 'password',
     database: 'employee_db'
-  });
+});
 
-  // prompt to do menu
+// prompt to do menu
 const toDoMenu = [
     {
-        type: "list",
-        message: "What would you like to do?",
-        name: "select",
+        type: 'list',
+        message: `What would you like to do?`,
+        name: 'select',
         choices: [
         "View All Employees",
         "View All Employees By Department",
@@ -31,24 +31,37 @@ const toDoMenu = [
     }
 ];
 
-  //  create connection
+//  create connection
 connection.connect(function(err){
     if(err) throw err;
     console.log("connected as id "+ connection.threadId);
     
-    // prompt todo menu
-    inquirer
-    .prompt(toDoMenu)
-    .then(function( response ) {
-        console.log(response)
-    })
+    init()
         
 });
 
-// function init() {
-//     inquirer
-//     .prompt(toDoMenu)
-//     .then(function( response ) {
-//         console.log(response)
-//     });
-// }
+// prompt todo menu
+function init(){
+    inquirer
+    .prompt(toDoMenu)
+    .then((selection) => {
+        console.log(selection.select)
+        switch (selection.select) {
+
+            case "View All Employees":
+              console.log("hi")
+              employee.getAllEmployees(connection)
+              break;
+            
+            // case "Engineer":
+            //   data = data.replace("%github", role.github)
+            //   return data;
+            //   break;
+            
+            // case "Intern":
+            //   data = data.replace("%school", role.school)
+            //   return data;
+            //   break;
+        }
+    })
+}
