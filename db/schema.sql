@@ -1,3 +1,4 @@
+DROP DATABASE IF EXISTS employee_db;
 -- Creates the "employee_db" database --
 CREATE DATABASE employee_db;
 
@@ -6,26 +7,31 @@ USE employee_db;
 
 -- Creates the table "department" within employee_db --
 CREATE TABLE department (
-  id INT NOT NULL AUTO_INCREMENT,
+  id INTEGER(3) NOT NULL AUTO_INCREMENT,
   name VARCHAR(30),
   PRIMARY KEY (id)
 );
 
 -- Creates the table "department" within employee_db --
 CREATE TABLE role (
-  id INT NOT NULL AUTO_INCREMENT,
+  id INTEGER(3) NOT NULL AUTO_INCREMENT,
   title VARCHAR(30),
   salary DECIMAL (7),
-  department_id INT, 
-  PRIMARY KEY (id)
+  department_id INTEGER(3), 
+  PRIMARY KEY (id),
+  FOREIGN KEY (department_id) REFERENCES department(id)
 );
 
 -- Creates the table "department" within employee_db --
 CREATE TABLE employee (
-  id INT NOT NULL AUTO_INCREMENT,
+  id INTEGER(10) NOT NULL AUTO_INCREMENT,
   first_name VARCHAR(30),
   last_name VARCHAR(30),
-  role_id INT ,
-  manager_id INT NULL,
-  PRIMARY KEY (id)
+  role_id INTEGER(10),
+  manager_id INTEGER(10) NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (role_id) REFERENCES role(id)
 );
+
+ALTER TABLE employee
+ADD FOREIGN KEY (manager_id) REFERENCES employee(id)
