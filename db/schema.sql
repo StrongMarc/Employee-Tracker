@@ -51,14 +51,24 @@ SELECT id, first_name, last_name
 FROM employee
 INNER JOIN employee ON employee.manager_id = employee.id;
 
+-- table
 SELECT employee.id, first_name, last_name, title, department_id, salary, manager_id
 FROM employee
 INNER JOIN role ON employee.role_id = role.id ORDER BY employee.id;
 
+-- try
+SELECT CONCAT(m.lastName, ', ', m.firstName) AS 'Manager', CONCAT(e.lastName, ', ', e.firstName) AS 'Direct report'
+FROM employee e
+INNER JOIN employee m ON 
+    m.manager_id = e.id;
+
 
 CONCAT(first_name,' ' , last_name) AS 'department' FROM employee
 
-CREATE VIEW department AS
-SELECT department_id, name
-FROM role
-INNER JOIN department ON role.department_id = department.id;
+SELECT employee.id, first_name, last_name, title, department_id, salary, manager_id
+FROM employee
+JOIN role ON employee.role_id = role.id ORDER BY employee.id;
+
+SELECT first_name as first_name, (SELECT first_name FROM employee WHERE employee.id = manager_id) AS 'Manager' FROM employee;
+
+SELECT employee.id, first_name, last_name, title, department_id, salary, manager_id FROM employee INNER JOIN role ON employee.role_id = role.id WHERE department_id = '2' ORDER BY employee.id;

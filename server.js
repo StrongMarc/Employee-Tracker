@@ -64,7 +64,7 @@ function init(){
         switch (selection.select) {
 
             case "View All Employees":
-                employee.getAllEmployees(connection)
+                GetAllEmployees();
                 break;
             
             case "View All Employees By Department":
@@ -74,6 +74,11 @@ function init(){
     })
 }
 
+function GetAllEmployees(){
+    employee.getAllEmployees(connection)
+    setTimeout(init, 200)
+}
+
 function promptForDepartment(){
     inquirer
     .prompt(selectDepartment)
@@ -81,5 +86,7 @@ function promptForDepartment(){
         console.log(selection.department)
         cut = selection.department.charAt(0)
         employee.getAllEmployeesByDepartment(connection, cut)
+        setTimeout(init, 200)
     })
+    
 }
