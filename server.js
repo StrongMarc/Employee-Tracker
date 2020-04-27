@@ -49,19 +49,11 @@ function init(){
         switch (selection.select) {
 
             case "View All Employees":
-              console.log("hi")
               employee.getAllEmployees(connection)
+              
               break;
             
-            // case "Engineer":
-            //   data = data.replace("%github", role.github)
-            //   return data;
-            //   break;
             
-            // case "Intern":
-            //   data = data.replace("%school", role.school)
-            //   return data;
-            //   break;
         }
     })
 }

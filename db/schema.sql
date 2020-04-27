@@ -33,5 +33,32 @@ CREATE TABLE employee (
   FOREIGN KEY (role_id) REFERENCES role(id)
 );
 
+-- https://www.w3schools.com/sql/sql_foreignkey.asp
+-- To create a FOREIGN KEY constraint on the "PersonID" column when the "Orders" table is already created, --
+--  use the following SQL:
 ALTER TABLE employee
-ADD FOREIGN KEY (manager_id) REFERENCES employee(id)
+ADD FOREIGN KEY (manager_id) REFERENCES employee(id) ON UPDATE CASCADE;
+
+-- https://www.w3schools.com/sql/sql_alter.asp
+ALTER TABLE employee MODIFY manager_id VARCHAR(61);
+-- https://stackoverflow.com/questions/5774532/mysql-combine-two-columns-and-add-into-a-new-column
+UPDATE manager_id SET combined = CONCAT(first_name, ' ', last_name);
+SELECT manager_id FROM employee;
+ 
+ -- https://www.mysqltutorial.org/mysql-self-join/
+SELECT CONCAT(first_name,' ' , last_name) AS 'Manager' FROM employee INNER JOIN employee ON employee.manager_id = employee.id;
+SELECT id, first_name, last_name
+FROM employee
+INNER JOIN employee ON employee.manager_id = employee.id;
+
+SELECT employee.id, first_name, last_name, title, department_id, salary, manager_id
+FROM employee
+INNER JOIN role ON employee.role_id = role.id ORDER BY employee.id;
+
+
+CONCAT(first_name,' ' , last_name) AS 'department' FROM employee
+
+CREATE VIEW department AS
+SELECT department_id, name
+FROM role
+INNER JOIN department ON role.department_id = department.id;
