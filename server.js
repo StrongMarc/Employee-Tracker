@@ -31,6 +31,21 @@ const toDoMenu = [
     }
 ];
 
+// prompt to do menu
+const selectDepartment = [
+    {
+        type: 'list',
+        message: `Which department to view?`,
+        name: 'department',
+        choices: [
+        "1: Sales",
+        "2: Engineering",
+        "3: Finance",
+        "4: Legal"
+        ]
+    }
+];
+
 //  create connection
 connection.connect(function(err){
     if(err) throw err;
@@ -44,16 +59,27 @@ connection.connect(function(err){
 function init(){
     inquirer
     .prompt(toDoMenu)
-    .then((selection) => {
+    .then(function( selection ) {
         console.log(selection.select)
         switch (selection.select) {
 
             case "View All Employees":
-              employee.getAllEmployees(connection)
-              
-              break;
+                employee.getAllEmployees(connection)
+                break;
             
-            
+            case "View All Employees By Department":
+                promptForDepartment();
+                break;
         }
+    })
+}
+
+function promptForDepartment(){
+    inquirer
+    .prompt(selectDepartment)
+    .then(function( selection ) {
+        console.log(selection.department)
+        cut = selection.department.charAt(0)
+        employee.getAllEmployeesByDepartment(connection, cut)
     })
 }

@@ -8,4 +8,12 @@ module.exports = {
             console.table(response)
         })
     },
+
+    getAllEmployeesByDepartment: function(connection, selection){
+        console.log(selection)
+        connection.query(`SELECT employee.id, first_name, last_name, title, department_id, salary, manager_id FROM employee INNER JOIN role ON employee.role_id = role.id WHERE department_id = ? ORDER BY employee.id`, 
+        selection, function(err, response){
+            console.table(response)
+        })
+    },
 }
