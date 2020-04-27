@@ -31,7 +31,7 @@ const toDoMenu = [
     }
 ];
 
-// prompt to do menu
+// prompt departments
 const selectDepartment = [
     {
         type: 'list',
@@ -42,6 +42,24 @@ const selectDepartment = [
         "2: Engineering",
         "3: Finance",
         "4: Legal"
+        ]
+    }
+];
+
+// prompt roles
+const selectRole = [
+    {
+        type: 'list',
+        message: `Which roles to view all employees?`,
+        name: 'role',
+        choices: [
+        "Sales Lead",
+        "Salesperson",
+        "Lead Engineer",
+        "Software Engineer",
+        "Accountant",
+        "Legal Team Lead",
+        "Lawyer"
         ]
     }
 ];
@@ -70,15 +88,21 @@ function init(){
             case "View All Employees By Department":
                 promptForDepartment();
                 break;
+
+            case "View All Employees By Roles":
+                promptForRole();
+                break;
         }
     })
 }
 
+// function to display all employee table
 function GetAllEmployees(){
     employee.getAllEmployees(connection)
     setTimeout(init, 200)
 }
 
+// function to prompt for department and display employee table by the selected department
 function promptForDepartment(){
     inquirer
     .prompt(selectDepartment)
@@ -88,5 +112,16 @@ function promptForDepartment(){
         employee.getAllEmployeesByDepartment(connection, cut)
         setTimeout(init, 200)
     })
-    
+}
+
+// function to prompt for roles and display employee table by roles
+function promptForRole(){
+    inquirer
+    .prompt(selectRole)
+    .then(function( selection ) {
+        console.log(selection.role)
+        // cut = selection.role.charAt(0)
+        employee.getAllEmployeesByRole(connection, selection)
+        setTimeout(init, 200)
+    })
 }
