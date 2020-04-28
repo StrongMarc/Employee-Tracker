@@ -45,7 +45,7 @@ async function getDepartments() {
     let modifyDepartments = departments.map(department => {
         return {value: department.id, name: department.name}
     })
- 
+    console.log(modifyDepartments)
     // prompt departments
     const selectDepartment = [
         {
@@ -56,25 +56,31 @@ async function getDepartments() {
         }
     ];
     return selectDepartment;
+    console.log(selectDepartment)
 }
 
-// prompt roles
-const selectRole = [
-    {
-        type: 'list',
-        message: `Which roles to view all employees?`,
-        name: 'role',
-        choices: [
-        "Sales Lead",
-        "Salesperson",
-        "Lead Engineer",
-        "Software Engineer",
-        "Accountant",
-        "Legal Team Lead",
-        "Lawyer"
-        ]
-    }
-];
+// function to get all database roles and prompt to select which role
+async function getRoles() {
+    // get array of all roles
+    let roles = await employee.getRoles(connection)
+    console.log(roles)
+    // change each object key id of array to a value key
+    let modifyRoles = roles.map(function(role) {
+        return {value: role.id, name: role.title}
+    })
+    console.log(modifyRoles)
+    // prompt roles
+    const selectRole = [
+        {
+            type: 'list',
+            message: `Which roles to view all employees?`,
+            name: 'role',
+            choices:  modifyRoles
+        }
+    ];
+    console.log(selectRole)
+    return selectRole;
+}
 
 // prompt for employee name
 const employeeName = [
@@ -146,18 +152,20 @@ async function promptForDepartment(){
     inquirer
     .prompt(departmentPrompt)
     .then(function( selection ) {
+        console.log(selection)
         employee.getAllEmployeesByDepartment(connection, selection.department)
         setTimeout(init, 200)
     })
 }
 
 // function to prompt for roles and display employee table by roles
-function promptForRole(){
-
+async function promptForRole(){
+    let rolePrompt = await getRoles();
+    console.log('prompt', rolePrompt)
     inquirer
-    .prompt(selectRole)
+    .prompt(rolePrompt)
     .then(function( selection ) {
-        console.log(selection.role)
+        console.log(selection)
         employee.getAllEmployeesByRole(connection, selection)
         setTimeout(init, 200)
     })
