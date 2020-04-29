@@ -5,7 +5,7 @@ module.exports = {
     // return all employees ID, first name, last name, title, department ID, salary and manager ID
     getAllEmployees: function(connection){
         // connection.query(`SELECT first_name, CONCAT(first_name,' ' , last_name) AS 'Manager' FROM employee`, function(err, response){
-        return connection.query(`SELECT employee.id, first_name, last_name, title, department.name, salary, manager_id FROM employee INNER JOIN role ON employee.role_id = role.id INNER JOIN department on department.id = role.department_id ORDER BY employee.id;`);
+        return connection.query(`SELECT employee.id, employee.first_name, employee.last_name, title, department.name, salary, CONCAT(manager.first_name,' ' , manager.last_name) AS 'Manager' FROM employee INNER JOIN role ON employee.role_id = role.id INNER JOIN department on department.id = role.department_id LEFT JOIN employee manager ON manager.id = employee.manager_id ORDER BY employee.id;`);
     },
 
     // return all departments
