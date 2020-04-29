@@ -96,13 +96,27 @@ const employeeName = [
     }
 ];
 
+// function departmentToAdd(){
+    
+    // prompt department to add
+    const newDepartment = [
+        {
+            type: 'input',
+            message: `What is the name of the department?`,
+            name: 'department'
+        }
+    ];
+    
+//     console.log(newDepartment)
+//     return newDepartment;
+// }
+
 //  create connection
 connection.connect(function(err){
     if(err) throw err;
     console.log("connected as id "+ connection.threadId);
     
     init()
-        
 });
 
 // turn the callback function into promise
@@ -132,6 +146,10 @@ function init(){
                 addEmployee();
                 break;
 
+            case "Add Department":
+                addDepartment();
+                break;
+                
             // case "Remove Employee":
             //     removeEmployee();
             //     break;
@@ -184,6 +202,39 @@ function addEmployee(){
         })
     // setTimeout(init, 200)
     })
+}
+
+// function to add department
+async function addDepartment(){
+    let check = false;
+    try{
+
+    // get array of all departments
+    let departments = await employee.getDepartments(connection)
+    console.log(departments)
+    
+    let response = await inquirer
+        .prompt(newDepartment)
+        console.log(response.department)
+
+        // check for duplicate department
+        for (i=0; i<departments.length; i++){
+            if (departments[i].name == response.department){
+                check = true;
+            }
+        }
+       console.log(check)
+        if (check){
+            console.log('Department already exists')
+        }
+        else {
+            await employee.addDepartment(connection, response.department)
+        }
+    
+        setTimeout(init, 200)
+    } catch (err){
+        console.log(err)
+    }
 }
 
 // function to prompt all employees and remove

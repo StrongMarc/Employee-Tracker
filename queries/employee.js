@@ -46,4 +46,12 @@ module.exports = {
             console.log("Employee added")
         })
     },
+
+    // return all departments
+    addDepartment: function(connection, name){
+        console.log(name)
+        connection.query(`INSERT INTO department (name) VALUES (?);`, [name], function(err, response){
+            console.log("Department added");
+        })
+    }
 }
