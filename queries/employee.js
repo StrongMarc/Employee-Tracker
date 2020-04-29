@@ -4,8 +4,9 @@ module.exports = {
 
     // return all employees ID, first name, last name, title, department ID, salary and manager ID
     getAllEmployees: function(connection){
-        // connection.query(`SELECT first_name, CONCAT(first_name,' ' , last_name) AS 'Manager' FROM employee`, function(err, response){
-        return connection.query(`SELECT employee.id, employee.first_name, employee.last_name, title, department.name, salary, CONCAT(manager.first_name,' ' , manager.last_name) AS 'Manager' FROM employee INNER JOIN role ON employee.role_id = role.id INNER JOIN department on department.id = role.department_id LEFT JOIN employee manager ON manager.id = employee.manager_id ORDER BY employee.id;`);
+        // https://www.mysqltutorial.org/mysql-self-join/
+        // https://stackoverflow.com/questions/16013364/inner-join-with-3-tables-in-mysql
+        return connection.query(`SELECT employee.id, employee.first_name, employee.last_name, title, department.name AS 'department', salary, CONCAT(manager.first_name,' ' , manager.last_name) AS 'manager' FROM employee INNER JOIN role ON employee.role_id = role.id INNER JOIN department on department.id = role.department_id LEFT JOIN employee manager ON manager.id = employee.manager_id ORDER BY employee.id;`);
     },
 
     // return all departments
@@ -16,7 +17,7 @@ module.exports = {
     // console table all employees ID, first name, last name, title, department ID, salary and manager ID for selected department
     getAllEmployeesByDepartment: function(connection, selection){
         console.log(selection)
-        connection.query(`SELECT employee.id, first_name, last_name, title, department_id, salary, manager_id FROM employee INNER JOIN role ON employee.role_id = role.id WHERE department_id = ? ORDER BY employee.id`, 
+        connection.query(`SELECT employee.id, employee.first_name, employee.last_name, title, department.name AS 'department', salary, CONCAT(manager.first_name,' ' , manager.last_name) AS 'manager' FROM employee INNER JOIN role ON employee.role_id = role.id INNER JOIN department on department.id = role.department_id LEFT JOIN employee manager ON manager.id = employee.manager_id WHERE department_id = ? ORDER BY employee.id`, 
         selection, function(err, response){
             console.table(response)
         })
