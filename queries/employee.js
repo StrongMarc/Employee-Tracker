@@ -32,7 +32,7 @@ module.exports = {
     // console table all employees ID, first name, last name, title, department ID, salary and manager ID by roles
     getAllEmployeesByRole: function(connection, selection){
         console.log(selection)
-        connection.query(`SELECT employee.id, first_name, last_name, title, department_id, salary, manager_id FROM employee INNER JOIN role ON employee.role_id = role.id WHERE employee.role_id = ? ORDER BY employee.id`, 
+        connection.query(`SELECT employee.id, employee.first_name, employee.last_name, title, department.name AS 'department', salary, CONCAT(manager.first_name,' ' , manager.last_name) AS 'manager' FROM employee INNER JOIN role ON employee.role_id = role.id INNER JOIN department on department.id = role.department_id LEFT JOIN employee manager ON manager.id = employee.manager_id WHERE employee.role_id = ? ORDER BY employee.id;`, 
         selection.role, function(err, response){
             console.table(response)
         })
