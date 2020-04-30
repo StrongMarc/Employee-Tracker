@@ -47,11 +47,21 @@ module.exports = {
         })
     },
 
-    // return all departments
+    // return added department
     addDepartment: function(connection, name){
         console.log(name)
         connection.query(`INSERT INTO department (name) VALUES (?);`, [name], function(err, response){
             console.log("Department added");
+        })
+    },
+
+    // return added role
+    addRole: function(connection, role){
+        console.log("e61"),
+        console.log(role)
+        connection.query(`INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?);`, 
+        [role.role, role.salary, 2], function(err, response){
+            console.log("Role added");
         })
     }
 }

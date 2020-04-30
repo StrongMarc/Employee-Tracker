@@ -30,7 +30,7 @@ const toDoMenu = [
         "View All Employees By Roles",
         "Add Employee",
         "Add Department",
-        "Add Roles"
+        "Add Role"
         // "Remove Employee"
         ]
     }
@@ -56,7 +56,6 @@ async function getDepartments() {
         }
     ];
     return selectDepartment;
-    console.log(selectDepartment)
 }
 
 // function to get all database roles and prompt to select which role
@@ -73,7 +72,7 @@ async function getRoles() {
     const selectRole = [
         {
             type: 'list',
-            message: `Which roles to view all employees?`,
+            message: `Which role to view all employees?`,
             name: 'role',
             choices:  modifyRoles
         }
@@ -95,21 +94,51 @@ const employeeName = [
         name: 'last_name',
     }
 ];
-
-// function departmentToAdd(){
     
-    // prompt department to add
-    const newDepartment = [
+// prompt department to add
+const newDepartment = [
+    {
+        type: 'input',
+        message: `What is the name of the department?`,
+        name: 'department'
+    }
+];
+
+// prompt role to add
+const newRole = [
+    {
+        type: 'input',
+        message: `What is the name of the role?`,
+        name: 'role'
+    },
+    {
+        type: 'input',
+        message: `What is the role salary?`,
+        name: 'salary'
+    }
+];
+
+// function to get all database departments and prompt to select which department
+async function roleDepartments() {
+    // get array of all departments
+    let departments = await employee.getDepartments(connection)
+
+    // change each object key id of array to a value key
+    let modifyDepartments = departments.map(department => {
+        return {value: department.id, name: department.name}
+    })
+    console.log(modifyDepartments)
+    // prompt departments
+    const selectDepartment = [
         {
-            type: 'input',
-            message: `What is the name of the department?`,
-            name: 'department'
+            type: 'list',
+            message: `What is the role department?`,
+            name: 'department',
+            choices:  modifyDepartments
         }
     ];
-    
-//     console.log(newDepartment)
-//     return newDepartment;
-// }
+    return selectDepartment;
+}
 
 //  create connection
 connection.connect(function(err){
@@ -148,6 +177,10 @@ function init(){
 
             case "Add Department":
                 addDepartment();
+                break;
+
+            case "Add Role":
+                addRole();
                 break;
                 
             // case "Remove Employee":
@@ -211,7 +244,7 @@ async function addDepartment(){
 
     // get array of all departments
     let departments = await employee.getDepartments(connection)
-    console.log(departments)
+    console.log('prompt', departments)
     
     let response = await inquirer
         .prompt(newDepartment)
@@ -224,13 +257,62 @@ async function addDepartment(){
             }
         }
        console.log(check)
-        if (check){
+        if (response.department == ''){
+            console.log('YOU MUST ENTER A DEPARTMENT NAME')
+        }
+        else if (check){
             console.log('Department already exists')
         }
         else {
             await employee.addDepartment(connection, response.department)
         }
     
+        setTimeout(init, 200)
+    } catch (err){
+        console.log(err)
+    }
+}
+
+// function to add role
+async function addRole(){
+    let check = false;
+    try{
+    
+    // get array of all roles
+    let roles = await employee.getRoles(connection)
+    console.log('prompt', roles)
+
+    let response = await inquirer
+        .prompt(newRole)
+        let departmentPrompt = await roleDepartments();
+            console.log(departmentPrompt)
+            await inquirer
+            .prompt(departmentPrompt)
+            .then(async function( selection ) {
+            // check for duplicate department
+            for (i=0; i<roles.length; i++){
+                if (roles[i].title == response.role){
+                    check = true;
+                }
+            }
+            console.log(check)
+            if (response.role == ''){
+            console.log('YOU MUST ENTER A ROLE NAME')
+            }
+            if (response.salary == ''){
+                console.log('YOU MUST ENTER A SALARY FOR ROLE')
+                }
+            else if (check){
+                console.log('Role already exists')
+            }
+            else {
+                console.log("308")
+                console.log(response.role)
+                console.log(selection)
+                await employee.addRole(connection, response, selection)
+                console.log("hello")
+            }
+        })
         setTimeout(init, 200)
     } catch (err){
         console.log(err)
