@@ -56,11 +56,11 @@ module.exports = {
     },
 
     // return added role
-    addRole: function(connection, role){
+    addRole: function(connection, role, department_id){
         console.log("e61"),
-        console.log(role)
+        console.log(department_id)
         connection.query(`INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?);`, 
-        [role.role, role.salary, 2], function(err, response){
+        [role.role, role.salary, department_id], function(err, response){
             console.log("Role added");
         })
     }

@@ -309,7 +309,7 @@ async function addRole(){
                 console.log("308")
                 console.log(response.role)
                 console.log(selection)
-                await employee.addRole(connection, response, selection)
+                await employee.addRole(connection, response, selection.department)
                 console.log("hello")
             }
         })
