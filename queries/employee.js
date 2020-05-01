@@ -6,7 +6,7 @@ module.exports = {
     getAllEmployees: function(connection){
         // https://www.mysqltutorial.org/mysql-self-join/
         // https://stackoverflow.com/questions/16013364/inner-join-with-3-tables-in-mysql
-        return connection.query(`SELECT employee.id, employee.first_name, employee.last_name, title, department.name AS 'department', salary, CONCAT(manager.first_name,' ' , manager.last_name) AS 'manager' FROM employee INNER JOIN role ON employee.role_id = role.id INNER JOIN department on department.id = role.department_id LEFT JOIN employee manager ON manager.id = employee.manager_id ORDER BY employee.id;`);
+        return connection.query(`SELECT employee.id, employee.first_name, employee.last_name, title, department.name AS 'department', salary, CONCAT(manager.first_name,' ' , manager.last_name) AS 'manager' FROM employee LEFT JOIN role ON employee.role_id = role.id LEFT JOIN department on department.id = role.department_id LEFT JOIN employee manager ON manager.id = employee.manager_id ORDER BY employee.id;`);
     },
 
     // return all employees with first and last name

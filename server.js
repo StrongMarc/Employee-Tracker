@@ -99,12 +99,12 @@ const employeeName = [
 async function employeeRoles() {
     // get array of all roles
     let roles = await employee.getRoles(connection)
-  
+    console.log(roles)
     // change each object key id of array to a value key
     let modifyRoles = roles.map(function(role) {
         return {value: role.id, name: role.title}
     })
-  
+  console.log(modifyRoles)
     // prompt roles
     const selectRole = [
         {
@@ -122,11 +122,13 @@ async function employeeRoles() {
 async function employeeManager() {
     // get array of all employees
     let managers = await employee.getEmployees(connection)
-    console.log(managers)
+  
     // change each object key id of array to a value key
     let modifyManagers = managers.map(function(man) {
         return {value: man.id, name: man.manager}
     })
+    modifyManagers.unshift({value: null, name: "None"})
+    
     console.log(modifyManagers)
     // prompt roles
     const selectManager = [
