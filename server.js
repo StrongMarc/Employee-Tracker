@@ -109,7 +109,7 @@ async function employeeRoles() {
     const selectRole = [
         {
             type: 'list',
-            message: `What is the employee role?`,
+            message: `What is the employee's role?`,
             name: 'role',
             choices:  modifyRoles
         }
@@ -122,17 +122,17 @@ async function employeeRoles() {
 async function employeeManager() {
     // get array of all employees
     let managers = await employee.getEmployees(connection)
-
+    console.log(managers)
     // change each object key id of array to a value key
     let modifyManagers = managers.map(function(man) {
-        return {value: man.id, name: man.first_name}
+        return {value: man.id, name: man.manager}
     })
     console.log(modifyManagers)
     // prompt roles
     const selectManager = [
         {
             type: 'list',
-            message: `What is the employee role?`,
+            message: `What is the employee's manager?`,
             name: 'manager',
             choices:  modifyManagers
         }
@@ -250,7 +250,6 @@ async function promptForDepartment(){
     inquirer
     .prompt(departmentPrompt)
     .then(function( selection ) {
-        console.log(selection)
         employee.getAllEmployeesByDepartment(connection, selection.department)
         setTimeout(init, 200)
     })
@@ -260,12 +259,11 @@ async function promptForDepartment(){
 async function promptForRole(){
     // get selected role
     let rolePrompt = await getRoles();
-    console.log('prompt', rolePrompt)
+
     // prompt function getRoles using rolePrompt
     inquirer
     .prompt(rolePrompt)
     .then(function( selection ) {
-        console.log(selection)
         employee.getAllEmployeesByRole(connection, selection)
         setTimeout(init, 200)
     })
@@ -278,11 +276,10 @@ async function addDepartment(){
 
     // get array of all departments
     let departments = await employee.getDepartments(connection)
-    console.log('prompt', departments)
-    
+
+    // prompt newDepartment
     let response = await inquirer
-        .prompt(newDepartment)  // line 99
-        console.log(response.department)
+        .prompt(newDepartment)  // line 145
 
         // check for duplicate department
         for (i=0; i<departments.length; i++){
@@ -314,15 +311,15 @@ async function addRole(){
     
     // get array of all roles
     let roles = await employee.getRoles(connection)
-    console.log('prompt', roles)
 
     //prompt to select role
     let response = await inquirer
-        .prompt(newRole)  //  line 108
+        .prompt(newRole)  //  line 154
 
-        //
+        // get selected department
         let departmentPrompt = await roleDepartments();
-        console.log(departmentPrompt)
+     
+        // prompt function roleDepartments using departmentPrompt
         await inquirer
         .prompt(departmentPrompt)
         .then(async function( selection ) {
@@ -332,7 +329,7 @@ async function addRole(){
                     check = true;
                 }
             }
-            console.log(check)
+            // validate
             if (response.role == ''){
             console.log('YOU MUST ENTER A ROLE NAME')
             }
@@ -342,12 +339,9 @@ async function addRole(){
             else if (check){
                 console.log('Role already exists')
             }
+            // add role to database
             else {
-                console.log("308")
-                console.log(response.role)
-                console.log(selection)
                 await employee.addRole(connection, response, selection.department)
-                console.log("hello")
             }
         })
         setTimeout(init, 200)
@@ -390,7 +384,7 @@ async function addEmployee(){
     }
 }
 
-// function to prompt all employees and remove
+// function to prompt all employees and remove selected employee
 // function removeEmployee(){
 //     employee.getAllEmployeesByRole(connection)
 // }
