@@ -29,7 +29,7 @@ const toDoMenu = [
         "View All Employees By Department",
         "View All Employees By Roles",
         "Add Employee",
-        // "Remove Employee",
+        "Remove Employee",
         "Update employee role",
         "Add Department",
         "Add Role"
@@ -149,13 +149,25 @@ async function whichEmployee(option) {
         ];
         return selectManager;
     }
-    else {
+    else if (option == 3){
         // prompt employees to update
         const selectEmployee = [
             {
                 type: 'list',
                 message: `Which employee to update?`,
                 name: 'employee',
+                choices:  modifyManagers
+            }
+        ];
+        return selectEmployee;
+    }
+    else {
+        // prompt employees to update
+        const selectEmployee = [
+            {
+                type: 'list',
+                message: `Which employee do you want to remove?`,
+                name: 'id',
                 choices:  modifyManagers
             }
         ];
@@ -232,9 +244,9 @@ function init(){
                 updateEmployeeRole();
                 break;
 
-            // case "Remove Employee":
-            //     removeEmployee();
-            //     break;
+            case "Remove Employee":
+                removeEmployee();
+                break;
         }
     })
 }
@@ -416,6 +428,21 @@ async function updateEmployeeRole(){
 }
 
 // function to prompt all employees and remove selected employee
-// function removeEmployee(){
-//     employee.getAllEmployeesByRole(connection)
-// }
+async function removeEmployee(){
+    option = 4; // // Set to "4" as a check to delete
+    try{
+        // get selected employee
+        let selectedEmployee = await whichEmployee(option);  // line 128
+   
+        // prompt function whichEmployee using selectedEmployee
+        await inquirer
+        .prompt(selectedEmployee)
+        .then(async function( selection ) {
+            console.log(selection)
+            employee.deleteEmployee(connection, selection)
+        })
+    setTimeout(init, 200)
+    } catch (err){
+        console.log(err)
+    }
+}

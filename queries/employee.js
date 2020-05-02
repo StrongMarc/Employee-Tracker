@@ -63,10 +63,17 @@ module.exports = {
         })
     },
 
-    updateEmployeeRole: function(connection, employee, role){
+    updateEmployeeRole: function(connection, employee_id, role_id){
         connection.query(`UPDATE employee SET role_id = ? WHERE id = ?`, 
-        [role, employee], function(err, response){
+        [role_id, employee_id], function(err, response){
             console.log("Employee Role updated")
+        })
+    },
+
+    deleteEmployee: function(connection, employee_id){
+        console.log("e74")
+        connection.query(`DELETE FROM employee WHERE ?`, employee_id, function(err, res){
+            console.log("Employee deleted")
         })
     },
 }
