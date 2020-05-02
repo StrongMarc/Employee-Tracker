@@ -375,27 +375,32 @@ async function addEmployee(){
         // prompt for employee first and last name to add
         let response = await inquirer
         .prompt(employeeName)  // line 114
-       
-        // get selected role
-        let employeeRole = await getRoles(option);  // line 99
         
-        // prompt function getRoles using employeeRole
-        await inquirer
-        .prompt(employeeRole)
-        .then(async function( selectionEmp ) {
-            
-            // get selected manager
-            let manager = await whichEmployee(option);  // line 128
-
-            // prompt function whichEmployee using manager
+        // validate
+        if (response.first_name == '' || response.last_name == ''){
+            console.log('YOU MUST ENTER BOTH A FIRST AND LAST NAME')
+        }
+        else {
+            // get selected role
+            let employeeRole = await getRoles(option);  // line 99
+        
+            // prompt function getRoles using employeeRole
             await inquirer
-            .prompt(manager)
-            .then(async function( selectionMan ) {
-                await employee.addEmployee(connection, response, selectionEmp.role, selectionMan.manager)
-            })
+            .prompt(employeeRole)
+            .then(async function( selectionEmp ) {
+                
+                // get selected manager
+                let manager = await whichEmployee(option);  // line 128
 
+                // prompt function whichEmployee using manager
+                await inquirer
+                .prompt(manager)
+                .then(async function( selectionMan ) {
+                    await employee.addEmployee(connection, response, selectionEmp.role, selectionMan.manager)
+                })
+            })
+        }
         setTimeout(init, 200)
-        })
     } catch (err){
         console.log(err)
     }
