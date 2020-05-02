@@ -49,7 +49,6 @@ module.exports = {
 
     // add role
     addRole: function(connection, role, department_id){
-        console.log(department_id)
         connection.query(`INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?);`, 
         [role.role, role.salary, department_id], function(err, response){
             console.log("Role added");
@@ -58,11 +57,16 @@ module.exports = {
 
     // add employee
     addEmployee: function(connection, response, role, manager){
-        console.log("e60")
-        
         connection.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?);`, 
         [response.first_name, response.last_name, role, manager], function(err, response){
             console.log("Employee added")
+        })
+    },
+
+    updateEmployeeRole: function(connection, employee, role){
+        connection.query(`UPDATE employee SET role_id = ? WHERE id = ?`, 
+        [role, employee], function(err, response){
+            console.log("Employee Role updated")
         })
     },
 }
