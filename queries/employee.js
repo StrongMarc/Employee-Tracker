@@ -23,6 +23,10 @@ module.exports = {
     getAllEmployeesByDepartment: function(connection, selection){
         connection.query(`SELECT employee.id, employee.first_name, employee.last_name, title, department.name AS 'department', salary, CONCAT(manager.first_name,' ' , manager.last_name) AS 'manager' FROM employee INNER JOIN role ON employee.role_id = role.id INNER JOIN department on department.id = role.department_id LEFT JOIN employee manager ON manager.id = employee.manager_id WHERE department_id = ? ORDER BY employee.id`, 
         selection, function(err, response){
+            if (err){
+                console.log('Error')
+                console.log(err)
+            }
             console.table(response)
         })
     },
@@ -36,6 +40,10 @@ module.exports = {
     getAllEmployeesByRole: function(connection, selection){
         connection.query(`SELECT employee.id, employee.first_name, employee.last_name, title, department.name AS 'department', salary, CONCAT(manager.first_name,' ' , manager.last_name) AS 'manager' FROM employee INNER JOIN role ON employee.role_id = role.id INNER JOIN department on department.id = role.department_id LEFT JOIN employee manager ON manager.id = employee.manager_id WHERE employee.role_id = ? ORDER BY employee.id;`, 
         selection.role, function(err, response){
+            if (err){
+                console.log('Error')
+                console.log(err)
+            }
             console.table(response)
         })
     },
@@ -43,6 +51,10 @@ module.exports = {
     // add department
     addDepartment: function(connection, name){
         connection.query(`INSERT INTO department (name) VALUES (?);`, [name], function(err, response){
+            if (err){
+                console.log('Error')
+                console.log(err)
+            }
             console.log("Department added");
         })
     },
@@ -51,6 +63,10 @@ module.exports = {
     addRole: function(connection, role, department_id){
         connection.query(`INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?);`, 
         [role.role, role.salary, department_id], function(err, response){
+            if (err){
+                console.log('Error')
+                console.log(err)
+            }
             console.log("Role added");
         })
     },
@@ -59,6 +75,10 @@ module.exports = {
     addEmployee: function(connection, response, role, manager){
         connection.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?);`, 
         [response.first_name, response.last_name, role, manager], function(err, response){
+            if (err){
+                console.log('Error')
+                console.log(err)
+            }
             console.log("Employee added")
         })
     },
@@ -66,6 +86,10 @@ module.exports = {
     updateEmployeeRole: function(connection, employee_id, role_id){
         connection.query(`UPDATE employee SET role_id = ? WHERE id = ?`, 
         [role_id, employee_id], function(err, response){
+            if (err){
+                console.log('Error')
+                console.log(err)
+            }
             console.log("Employee Role updated")
         })
     },
@@ -73,6 +97,10 @@ module.exports = {
     deleteEmployee: function(connection, employee_id){
         console.log("e74")
         connection.query(`DELETE FROM employee WHERE ?`, employee_id, function(err, res){
+            if (err){
+                console.log('Error')
+                console.log(err)
+            }
             console.log("Employee deleted")
         })
     },
