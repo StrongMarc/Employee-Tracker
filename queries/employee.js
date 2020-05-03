@@ -95,7 +95,6 @@ module.exports = {
     },
 
     deleteEmployee: function(connection, employee_id){
-        console.log("e74")
         connection.query(`DELETE FROM employee WHERE ?`, employee_id, function(err, res){
             if (err){
                 console.log('Error')
