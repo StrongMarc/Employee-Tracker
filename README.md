@@ -4,3 +4,5 @@ create employee-tracker app that console tables a list of employees from the dat
     * Add Employee, department or role
     * Update Employee role
 
+# Demo video
+https://drive.google.com/file/d/1RjhppPkoSQsZONwuTNpwleGSwSOh0ptz/view
